@@ -9,8 +9,8 @@ Esta práctica se ha realizado bajo el contexto de la asignatura _Tipología y c
 
 La actividad ha sido realizada por:
 
-* **Anna Llorens Roig**
-* **Carlos Villar Robles**
+* **Anna Llorens Roig (Aula1)**
+* **Carlos Villar Robles (Aula2)**
 
 ## Contenido del repositorio
 * **data/adults.csv**: Punto de entrada al programa. Datos originales.
