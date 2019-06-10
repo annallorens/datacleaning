@@ -134,9 +134,11 @@ $(document).ready(function () {
 <li><a href="#inegracion-y-seleccion-de-los-datos-de-interes.">3. Inegración y selección de los datos de interés.</a></li>
 <li><a href="#limpieza-de-los-datos.">4. Limpieza de los datos.</a><ul>
 <li><a href="#ceros-y-elementos-vacios">4.1 Ceros y elementos vacios</a></li>
-<li><a href="#tratamiento-de-conjuntos">4.2 Tratamiento de conjuntos</a></li>
+<li><a href="#identificacion-y-tratamiento-de-valores-extremos">4.2 Identificación y tratamiento de valores extremos</a></li>
 </ul></li>
-<li><a href="#analisis-de-los-datos.">5. Análisis de los datos.</a></li>
+<li><a href="#analisis-de-los-datos.">5. Análisis de los datos.</a><ul>
+<li><a href="#seleccion-de-los-grupos-de-datos-que-se-quieren-analizar">5.1 Selección de los grupos de datos que se quieren analizar</a></li>
+</ul></li>
 <li><a href="#representacion-de-los-resultados-a-partir-de-tablas-y-graficas">6. Representación de los resultados a partir de tablas y gráficas</a></li>
 <li><a href="#resolucion-del-problema.">7. Resolución del problema.</a></li>
 <li><a href="#contribuciones">8. Contribuciones</a></li>
@@ -262,8 +264,14 @@ colSums(data==&quot;?&quot;)</code></pre>
 ##           sex hour_per_week        income 
 ##             0             0             0</code></pre>
 </div>
-<div id="tratamiento-de-conjuntos" class="section level3">
-<h3>4.2 Tratamiento de conjuntos</h3>
+<div id="identificacion-y-tratamiento-de-valores-extremos" class="section level3">
+<h3>4.2 Identificación y tratamiento de valores extremos</h3>
+</div>
+</div>
+<div id="analisis-de-los-datos." class="section level2">
+<h2>5. Análisis de los datos.</h2>
+<div id="seleccion-de-los-grupos-de-datos-que-se-quieren-analizar" class="section level3">
+<h3>5.1 Selección de los grupos de datos que se quieren analizar</h3>
 <p>Para simplificar el conjunto de valores de las variables categóricas vamos agrupar por categorias los siguientes atributos: <em>workclass</em> , <em>maritalStatus</em>, <em>occupation</em></p>
 <ul>
 <li>Para la variable <strong>workclass</strong> deferenciaremos entre: goverment, public, public, self-employed, other</li>
@@ -370,9 +378,6 @@ head(data)</code></pre>
 ## 5            40  &lt;=50K
 ## 6            40  &lt;=50K</code></pre>
 </div>
-</div>
-<div id="analisis-de-los-datos." class="section level2">
-<h2>5. Análisis de los datos.</h2>
 </div>
 <div id="representacion-de-los-resultados-a-partir-de-tablas-y-graficas" class="section level2">
 <h2>6. Representación de los resultados a partir de tablas y gráficas</h2>

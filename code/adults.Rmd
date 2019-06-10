@@ -3,14 +3,14 @@ title: 'PRÁCTICA 2: Limpieza y validación de los datos'
 author: "Autores: Anna Llorens Roig, Carlos Villar Robles"
 date: "Dataset: Adults"
 output:
+  pdf_document:
+    highlight: zenburn
+    toc: yes
   html_document:
     highlight: default
     theme: cosmo
     toc: yes
     toc_depth: 3
-  pdf_document:
-    highlight: zenburn
-    toc: yes
   word_document: default
 ---
 ```{r setup, include=FALSE}
@@ -127,6 +127,95 @@ colSums(data=="?")
 ### 4.2 Identificación y tratamiento de valores extremos
 ## 5. Análisis de los datos.
 ### 5.1 Selección de los grupos de datos que se quieren analizar
+Para simplificar el conjunto de valores de las variables categóricas vamos agrupar por categorias los siguientes atributos: _workclass_ , _maritalStatus_, _occupation_ 
+
+
+
+- Para la variable __workclass__ deferenciaremos entre: goverment, public, public, self-employed, other
+```{r}
+# Observamos atributos originales para la variable workclass
+summary(data$workclass)
+```
+
+```{r}
+levels(data$workclass)[1] <- 'Unknown'
+# combine into Government job
+data$workclass <- gsub('^Federal-gov', 'Government', data$workclass)
+data$workclass <- gsub('^Local-gov', 'Government', data$workclass)
+data$workclass <- gsub('^State-gov', 'Government', data$workclass) 
+data$workclass <- gsub('^Government', 'Public', data$workclass) 
+# combine into Sele-Employed job
+data$workclass <- gsub('^Self-emp-inc', 'Self-Employed', data$workclass)
+data$workclass <- gsub('^Self-emp-not-inc', 'Self-Employed', data$workclass)
+
+# combine into Other/Unknown
+data$workclass <- gsub('^Never-worked', 'Other', data$workclass)
+data$workclass <- gsub('^Without-pay', 'Other', data$workclass)
+data$workclass <- gsub('^Other', 'Other', data$workclass)
+data$workclass <- gsub('^Unknown', 'Other', data$workclass)
+data$workclass <- as.factor(data$workclass)
+```
+
+```{r}
+# Observamos nuevos atributos para la variable workclass
+summary(data$workclass)
+```
+
+- Para la variable __maritalStatus__ deferenciaremos entre: married, single
+```{r}
+# Observamos atributos originales para la variable maritalStatus
+summary(data$maritalStatus)
+```
+
+```{r}
+data$maritalStatus <- gsub('Married-AF-spouse', 'Married', data$maritalStatus)
+data$maritalStatus <- gsub('Married-civ-spouse', 'Married', data$maritalStatus)
+data$maritalStatus <- gsub('Married-spouse-absent', 'Married', data$maritalStatus)
+data$maritalStatus <- gsub('Never-married', 'Single', data$maritalStatus)
+data$maritalStatus <- gsub('Widowed', 'Single', data$maritalStatus)
+data$maritalStatus <- gsub('Divorced', 'Single', data$maritalStatus)
+data$maritalStatus <- gsub('Separated', 'Single', data$maritalStatus)
+data$maritalStatus <- as.factor(data$maritalStatus)
+```
+
+```{r}
+# Observamos nuevos atributos para la variable maritalStatus
+summary(data$maritalStatus)
+```
+
+- Para la variable __occupation__ deferenciaremos entre: Adm-clerical, Blue-Collar, Other/Unknown, Professional, Sales, Service, White-Collar
+```{r}
+# Observamos atributos originales para la variable occupation
+summary(data$occupation)
+```
+
+```{r}
+levels(data$occupation)[1] <- 'Unknown'
+data$occupation <- gsub('Craft-repair', 'Blue-Collar', data$occupation)
+data$occupation <- gsub('Exec-managerial', 'White-Collar', data$occupation)
+data$occupation <- gsub('Farming-fishing', 'Blue-Collar', data$occupation)
+data$occupation <- gsub('Handlers-cleaners', 'Blue-Collar', data$occupation)
+data$occupation <- gsub('Machine-op-inspct', 'Blue-Collar', data$occupation)
+data$occupation <- gsub('Other-service', 'Service', data$occupation)
+data$occupation <- gsub('Priv-house-serv', 'Service', data$occupation)
+data$occupation <- gsub('Prof-specialty', 'Professional', data$occupation)
+data$occupation <- gsub('Protective-serv', 'Service', data$occupation)
+data$occupation <- gsub('Tech-support', 'Service', data$occupation)
+data$occupation <- gsub('Transport-moving', 'Blue-Collar', data$occupation)
+data$occupation <- gsub('Unknown', 'Other/Unknown', data$occupation)
+data$occupation <- gsub('Armed-Forces', 'Other/Unknown', data$occupation)
+data$occupation <- as.factor(data$occupation)
+```
+
+```{r}
+# Observamos nuevos atributos para la variable occupation
+summary(data$occupation)
+```
+
+```{r}
+# Observamos el conjunto de datos una vez han sido procesados
+head(data)
+```
 
 ## 6. Representación de los resultados a partir de tablas y gráficas
 ## 7. Resolución del problema. 
