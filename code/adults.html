@@ -266,6 +266,24 @@ colSums(data==&quot;?&quot;)</code></pre>
 </div>
 <div id="identificacion-y-tratamiento-de-valores-extremos" class="section level3">
 <h3>4.2 Identificación y tratamiento de valores extremos</h3>
+<p>Los valores extremos o outliers son aquellos que parecen no ser congruentes sin los comparamos con el resto de los datos. Para identificarlos, podemos hacer uso de dos vías: (1) representar un diagrama de caja por cada variable y ver qué valores distan mucho del rango intercuartílico (la caja) o (2) utilizar la función boxplots.stats() de R, la cual se emplea a continuación. Así, se mostrarán sólo los valores atípicos para aquellas variables que los contienen:</p>
+<pre class="r"><code>boxplot.stats(data$age)$out</code></pre>
+<pre><code>##   [1] 79 76 90 77 76 81 78 90 88 90 77 90 77 78 80 90 81 81 76 80 90 76 79
+##  [24] 76 81 76 90 76 90 80 90 90 79 78 79 84 90 77 80 77 90 81 83 84 79 76
+##  [47] 85 82 79 77 90 76 90 84 78 78 76 80 90 90 77 76 84 76 90 76 90 76 77
+##  [70] 81 90 77 78 77 81 78 82 81 77 76 80 90 80 84 82 78 79 76 90 84 90 83
+##  [93] 78 80 77 78 76 79 80 79 80 90 90 90 90 81 76 83 90 90 81 80 80 90 79
+## [116] 77 77 80 76 82 85 80 79 90 76 76 77 76 79 81 77 88 90 82 76 88 76 77
+## [139] 83 76 77 79 77 86 90 77 82 83 81 76 79 76 84 78 76 76 76 78 84 79 78
+## [162] 90 80 81 78 81 90 80 82 90 90 85</code></pre>
+<pre class="r"><code>boxplot.stats(data$education_num)$out</code></pre>
+<pre><code>##   [1] 1 2 2 2 2 1 2 2 2 2 2 2 2 2 2 1 1 2 1 2 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+##  [36] 1 1 1 2 2 2 2 2 1 1 2 2 2 2 1 2 2 2 2 2 2 2 2 2 1 2 2 2 2 1 2 1 2 2 2
+##  [71] 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2 2 2 2 1 2 2 2 2 2 1 1 2 2 2 2 2 2 1 2 2
+## [106] 2 2 2 2 2 2 2 2 1 2 2 2 1 1 2 2 1 1 2 2 1 2 2 1 2 1 2 2 2 2 2 1 2 1 1
+## [141] 2 1 1 1 2 1 2 1 2 2 1 1 2 2 2 2 1 2 1 2 2 2 2 2 2 2 2 1 2 2 2 2 2 2 2
+## [176] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 2 2 1 2 1 2 1 2 2 1</code></pre>
+<p>No obstante, si revisamos los anteriores datos para varios adultos escogidos aleatoriamente, comprobamos que son valores que perfectamente pueden darse (La edad de un individuo puede ser de 90 años y los niveles de educación pueden ser 1 o 2). Es por ello que el manejo de estos valores extremos consistirá en simplemente dejarlos como actualmente están recogidos.</p>
 </div>
 </div>
 <div id="analisis-de-los-datos." class="section level2">
@@ -274,7 +292,7 @@ colSums(data==&quot;?&quot;)</code></pre>
 <h3>5.1 Selección de los grupos de datos que se quieren analizar</h3>
 <p>Para simplificar el conjunto de valores de las variables categóricas vamos agrupar por categorias los siguientes atributos: <em>workclass</em> , <em>maritalStatus</em>, <em>occupation</em></p>
 <ul>
-<li>Para la variable <strong>workclass</strong> deferenciaremos entre: goverment, public, public, self-employed, other</li>
+<li>Para la variable <strong>workclass</strong> diferenciaremos entre: goverment, public, public, self-employed, other</li>
 </ul>
 <pre class="r"><code># Observamos atributos originales para la variable workclass
 summary(data$workclass)</code></pre>
@@ -305,7 +323,7 @@ summary(data$workclass)</code></pre>
 <pre><code>##         Other       Private        Public Self-Employed 
 ##            14         22696          4351          3657</code></pre>
 <ul>
-<li>Para la variable <strong>maritalStatus</strong> deferenciaremos entre: married, single</li>
+<li>Para la variable <strong>maritalStatus</strong> diferenciaremos entre: married, single</li>
 </ul>
 <pre class="r"><code># Observamos atributos originales para la variable maritalStatus
 summary(data$maritalStatus)</code></pre>
@@ -328,7 +346,7 @@ summary(data$maritalStatus)</code></pre>
 <pre><code>## Married  Single 
 ##   14749   15969</code></pre>
 <ul>
-<li>Para la variable <strong>occupation</strong> deferenciaremos entre: Adm-clerical, Blue-Collar, Other/Unknown, Professional, Sales, Service, White-Collar</li>
+<li>Para la variable <strong>occupation</strong> diferenciaremos entre: Adm-clerical, Blue-Collar, Other/Unknown, Professional, Sales, Service, White-Collar</li>
 </ul>
 <pre class="r"><code># Observamos atributos originales para la variable occupation
 summary(data$occupation)</code></pre>
@@ -377,6 +395,12 @@ head(data)</code></pre>
 ## 4            40  &lt;=50K
 ## 5            40  &lt;=50K
 ## 6            40  &lt;=50K</code></pre>
+<div id="exportacion-de-los-datos" class="section level4">
+<h4>5.1.1 Exportación de los datos</h4>
+<p>Llegados a este punto, vamos a exportar el conjunto de datos con el vamos a realizar el análisis en un nuevo fichero al que denominaremos ‘adults_clean.csv’.</p>
+<pre class="r"><code># Exportación de los datos limpios en .csv
+write.csv(data, &quot;../data/adults_clean.csv&quot;)</code></pre>
+</div>
 </div>
 </div>
 <div id="representacion-de-los-resultados-a-partir-de-tablas-y-graficas" class="section level2">
@@ -416,8 +440,8 @@ head(data)</code></pre>
 <td align="right">AL, CV</td>
 </tr>
 <tr class="even">
-<td>Desarrollo código</td>
-<td align="right">………..</td>
+<td>Análisis de datos</td>
+<td align="right">AL, CV</td>
 </tr>
 </tbody>
 </table>

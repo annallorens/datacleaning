@@ -125,13 +125,23 @@ colSums(data=="?")
 
 
 ### 4.2 Identificación y tratamiento de valores extremos
+Los valores extremos o outliers son aquellos que parecen no ser congruentes sin los comparamos con el resto de los datos. Para identificarlos, podemos hacer uso de dos vías: (1) representar un diagrama de caja por cada variable y ver qué valores distan mucho del rango intercuartílico (la caja) o (2) utilizar la función boxplots.stats() de R, la cual se emplea a continuación. Así, se mostrarán sólo los valores atípicos para aquellas variables que los contienen:
+```{r}
+boxplot.stats(data$age)$out
+```
+```{r}
+boxplot.stats(data$education_num)$out
+```
+
+No obstante, si revisamos los anteriores datos para varios adultos escogidos aleatoriamente, comprobamos que son valores que perfectamente pueden darse (La edad de un individuo puede ser de 90 años y los niveles de educación pueden ser 1 o 2). Es por ello que el manejo de estos valores extremos consistirá en simplemente dejarlos como actualmente están recogidos.
+
 ## 5. Análisis de los datos.
 ### 5.1 Selección de los grupos de datos que se quieren analizar
 Para simplificar el conjunto de valores de las variables categóricas vamos agrupar por categorias los siguientes atributos: _workclass_ , _maritalStatus_, _occupation_ 
 
 
 
-- Para la variable __workclass__ deferenciaremos entre: goverment, public, public, self-employed, other
+- Para la variable __workclass__ diferenciaremos entre: goverment, public, public, self-employed, other
 ```{r}
 # Observamos atributos originales para la variable workclass
 summary(data$workclass)
@@ -161,7 +171,7 @@ data$workclass <- as.factor(data$workclass)
 summary(data$workclass)
 ```
 
-- Para la variable __maritalStatus__ deferenciaremos entre: married, single
+- Para la variable __maritalStatus__ diferenciaremos entre: married, single
 ```{r}
 # Observamos atributos originales para la variable maritalStatus
 summary(data$maritalStatus)
@@ -183,7 +193,7 @@ data$maritalStatus <- as.factor(data$maritalStatus)
 summary(data$maritalStatus)
 ```
 
-- Para la variable __occupation__ deferenciaremos entre: Adm-clerical, Blue-Collar, Other/Unknown, Professional, Sales, Service, White-Collar
+- Para la variable __occupation__ diferenciaremos entre: Adm-clerical, Blue-Collar, Other/Unknown, Professional, Sales, Service, White-Collar
 ```{r}
 # Observamos atributos originales para la variable occupation
 summary(data$occupation)
@@ -217,6 +227,15 @@ summary(data$occupation)
 head(data)
 ```
 
+#### 5.1.1 Exportación de los datos
+Llegados a este punto, vamos a exportar el conjunto de datos con el vamos a realizar el análisis en un nuevo fichero al que denominaremos  'adults_clean.csv'.
+```{r}
+# Exportación de los datos limpios en .csv
+write.csv(data, "../data/adults_clean.csv")
+```
+
+
+
 ## 6. Representación de los resultados a partir de tablas y gráficas
 ## 7. Resolución del problema. 
 ## 8. Contribuciones
@@ -228,6 +247,6 @@ head(data)
 | Descripción                 | AL, CV        |
 | Integración                 | AL, CV        |
 | Limpieza de datos           | AL, CV        |
-| Desarrollo código           | ...........   |
+| Análisis de datos           | AL, CV        |
 
 
