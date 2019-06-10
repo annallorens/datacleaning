@@ -3,63 +3,116 @@ title: 'PRÁCTICA 2: Limpieza y validación de los datos'
 author: "Autores: Anna Llorens Roig, Carlos Villar Robles"
 date: "Dataset: Adults"
 output:
-  pdf_document:
-    highlight: zenburn
-    toc: yes
   html_document:
     highlight: default
     theme: cosmo
     toc: yes
-    toc_depth: 2
+    toc_depth: 3
+  pdf_document:
+    highlight: zenburn
+    toc: yes
   word_document: default
 ---
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## 1. Descripción del dataset
+\pagebreak
 
-El conjunto de datos objeto de análisis se ha obtenido del repositorio UCI Machine Learning. Se trata del 'Adult data set' el cual consta de 14 atributos ..... Entre los campos del conjunto de datos encontramos los siguientes:
-  - 
+## 1. Introducción
 
-### 1.1. Importancia y objetivos de los análisis
+  El conjunto de datos objeto de análisis es de la base de datos 'Adult' del Censo de 1994 en Estados Unidos. Los detalles de este conjunto de datos se pueden encontrar en el repositorio de UCI Machine Learning: [https://archive.ics.uci.edu/ml/datasets/Adult](https://archive.ics.uci.edu/ml/datasets/Adult). 
+
+  Durante el desarrollo de esta práctica  trataremos de construir un modelo para predecir si el ingreso de cualquier individuo en los Estados Unidos es mayor o menor que USD 50000 según la información disponible sobre ese individuo en los datos del censo. Nos interesa conocer qué tan bien se puede predecir si el ingreso anual de una persona supera los 50000$ utilizando el conjunto de variables en este conjunto de datos. La pregunta se inspecciona en dos enfoques: técnicas de aprendizaje automático, visualización de datos y modelado estadístico tradicional. \linebreak \linebreak 
+  
+## 2. Descripción del dataset
+  
+  Se trata del 'Adult data set' el cual consta de 15 atributos y 32561 observaciones. \linebreak 
+  Entre los campos del conjunto de datos encontramos las siguientes variables dependientes:
+
+- _**age**_: edad del individuo
+- _**type_employer**_: tipo de empleador que tiene el individuo. Ya sean gubernamentales, militares, privados, etc.
+- _**fnlwgt**_: El \ # de personas que los encuestados creen que representa la observación. Ignoraremos esta variable
+- _**education**_: nivel más alto de educación alcanzado para esa persona
+- _**education_num**_: nivel más alto de educación en forma numérica
+- _**marital**_: estado civil del individuo
+- _**occupation**_:  ocupación del individuo
+- _**relationship**_: contiene valores de relaciones familiares como marido, padre, etc., pero solo contiene uno por observación
+- _**race**_: descripciones de la raza individual. Negro, blanco, esquimal, 
+- _**sex**_: sexo del individuo
+- _**capital_gain**_: ganancias de capital registradas
+- _**capital_loss**_: pérdidas de capital registradas
+- _**hr_per_week**_: horas trabajadas por semana
+- _**country**_: país de origen del individuo 
+
+Cómo variable dependiente del dataset tenemos:
+
+- _**income**_: variable booleana. Representa si la persona gana o no más de \ $ 50,000 por año de ingresos. \linebreak \linebreak 
 
 
-You can also embed plots, for example:
+## 3. Inegración y selección de los datos de interés. 
 
-## 2. Inegración y selección de los datos de interés. 
-
-Antes de comenzar con la limpieza de los datos, procedemos a realizar la lectura del fichero
-en formato CSV en el que se encuentran. El resultado devuelto por la llamada a la función
-read.csv() será un objeto data.frame:
+Antes de comenzar con la limpieza de los datos, procedemos a realizar la lectura del fichero en formato CSV en el que se encuentran. El resultado devuelto por la llamada a la función read.csv() será un objeto data.frame el cual mostraremos su cabecera: 
 
 ```{r}
 # Lectura de datos
 data <-read.csv('../data/adults.csv', header = TRUE)
-head(data[,1:5])
+```
 
+```{r , include=FALSE}
 #Eliminamos la primera columna ya que se trata de un índice.
 data$X <- NULL
+```
 
-# Vector con los tipos de variables R para cada variable
-sapply(data,class)
+```{r}
+# Comprobamos que los datos se han importado correctamente
+head(data[,1:5])
+```
 
-# Revisión descriptiva de la matriz de datos
+
+Un resumen de alto nivel de los datos se encuentra a continuación. Todas las variables han sido leídas en sus clases esperadas. 
+  
+```{r}
+str(data)
+```
+ 
+En primer lugar seleccionaremos las variables que las que nos centraremos para realizar el análisis. Por lo que eliminaremos las variables  _education_, _fnlwgt_, _relationship_, _capital-gain_, _capital-gain_, _race_
+
+```{r}
+# Eliminamos variables
+data$education <- NULL
+data$fnlwgt <- NULL
+data$relationship <- NULL
+data$capital_gain <- NULL
+data$capital_loss <- NULL
+data$native_country <- NULL
+data$race <- NULL
+```
+
+
+## 4. Limpieza de los datos.
+
+Una vez tenemos el conjunto de datos con el que trabajaremos observamos el resumen del conjuto y pasaremos a la limpieza de estos. 
+
+```{r}
 summary(data)
 ```
 
-Observamos que tenemos un total de 32561 observaciones en 15 variables. 
+### 4.1 Ceros y elementos vacios 
 
-## 3. Limpieza de los datos. 
-## 4. Análisis de los datos. 
-## 5. Representación de los resultados a partir de tablas y gráficas
-## 6. Resolución del problema. 
-## 7. Contribuciones
+
+## 5. Análisis de los datos. 
+## 6. Representación de los resultados a partir de tablas y gráficas
+## 7. Resolución del problema. 
+## 8. Contribuciones
 
 | Contribuciones              | Firma         |
 | --------------------------- | -------------:|
-| Investigación previa        | AL, CV        |  
-| Redacción de las respuestas | centered      |
-| Desarrollo código           | are neat      |
+| Investigación previa        | AL, CV        |
+| Introducción                | AL, CV        | 
+| Descripción                 | Al, CV        |
+| Integración                 | Al, CV        |
+| Limpieza de datos           | .......       |
+| Desarrollo código           | ...........   |
 
 
