@@ -3,14 +3,14 @@ title: 'PRÁCTICA 2: Limpieza y validación de los datos'
 author: "Autores: Anna Llorens Roig, Carlos Villar Robles"
 date: "Dataset: Adults"
 output:
-  pdf_document:
-    highlight: zenburn
-    toc: yes
   html_document:
     highlight: default
     theme: cosmo
     toc: yes
     toc_depth: 3
+  pdf_document:
+    highlight: zenburn
+    toc: yes
   word_document: default
 ---
 ```{r setup, include=FALSE}
@@ -21,13 +21,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## 1. Introducción
 
-  El conjunto de datos objeto de análisis es de la base de datos 'Adult' del Censo de 1994 en Estados Unidos. Los detalles de este conjunto de datos se pueden encontrar en el repositorio de UCI Machine Learning: [https://archive.ics.uci.edu/ml/datasets/Adult](https://archive.ics.uci.edu/ml/datasets/Adult). 
+  El conjunto de datos objeto de análisis es de la base de datos 'data' del Censo de 1994 en Estados Unidos. Los detalles de este conjunto de datos se pueden encontrar en el repositorio de UCI Machine Learning: [https://archive.ics.uci.edu/ml/datasets/data](https://archive.ics.uci.edu/ml/datasets/data). 
 
   Durante el desarrollo de esta práctica  trataremos de construir un modelo para predecir si el ingreso de cualquier individuo en los Estados Unidos es mayor o menor que USD 50000 según la información disponible sobre ese individuo en los datos del censo. Nos interesa conocer qué tan bien se puede predecir si el ingreso anual de una persona supera los 50000$ utilizando el conjunto de variables en este conjunto de datos. La pregunta se inspecciona en dos enfoques: técnicas de aprendizaje automático, visualización de datos y modelado estadístico tradicional. \linebreak \linebreak 
   
 ## 2. Descripción del dataset
   
-  Se trata del 'Adult data set' el cual consta de 15 atributos y 32561 observaciones. \linebreak 
+  Se trata del 'data data set' el cual consta de 15 atributos y 32561 observaciones. \linebreak 
   Entre los campos del conjunto de datos encontramos las siguientes variables dependientes:
 
 - _**age**_: edad del individuo
@@ -48,6 +48,24 @@ knitr::opts_chunk$set(echo = TRUE)
 Cómo variable dependiente del dataset tenemos:
 
 - _**income**_: variable booleana. Representa si la persona gana o no más de \ $ 50,000 por año de ingresos. \linebreak \linebreak 
+
+### 2.1 Importación de librerías
+Cargamos las librerías R que vamos a utilizar para la resolución de la práctica
+```{r}
+# Libreria de visualizacion de datos
+library("ggplot2")
+
+# Librerías para la generación de grids
+library("grid")
+library("gridExtra")
+
+# Librería para obtención de información detallada
+library("gmodels")
+
+```
+
+
+
 
 
 ## 3. Inegración y selección de los datos de interés. 
@@ -134,6 +152,18 @@ boxplot.stats(data$education_num)$out
 ```
 
 No obstante, si revisamos los anteriores datos para varios adultos escogidos aleatoriamente, comprobamos que son valores que perfectamente pueden darse (La edad de un individuo puede ser de 90 años y los niveles de educación pueden ser 1 o 2). Es por ello que el manejo de estos valores extremos consistirá en simplemente dejarlos como actualmente están recogidos.
+
+
+El juego de datos sobre el que realizaremos el estudio ya ha sido "limpiado" previamente. Hemos eliminado los valores nulos, elegido las variables sobre las que se realizará la clasificación y su estandarización. La clasificación de variables es la siguiente: 
+
+- La variable `age` cuantitativa discreta, hace referencia a la edad.  
+- La variable `workclass` cualitativa nominal, hace referencia a la clase de trabajo.
+- La variable `education_num` cualitativa ordinal, hace referencia al nivel de estudios.
+- La variable `marital_status` cualitativa categórica, hace referencia al estado cívil.
+- La variable `occupation` cualitativa categórica, hace referencia al tipo de trabajo. 
+- La variable `sex` cualitativa nominal, hace referencia al sexo. 
+- La variable `income` cualitativa nominal, hace referencia a los ingresos anuales.  
+
 
 ## 5. Análisis de los datos.
 ### 5.1 Selección de los grupos de datos que se quieren analizar
@@ -236,7 +266,109 @@ write.csv(data, "../data/adults_clean.csv")
 
 
 
+### 5.2 Representación de las variables
+
+Estudiamos la relación de la variable `income` con el resto de variables del juego de datos. Para ello, visualizaremos mediante un diagramas de barras cada variable con respecto a la variable `income` y analizaremos los resultados. 
+
+- Relación con la variable `age`
+```{r}
+# Relación con la variable age
+ggplot(data,aes(age,fill=income))+geom_histogram(binwidth=1, color='black') +labs(x="",
+y="Adults")+ guides(fill=guide_legend(title=""))+ggtitle("Income by age")
+
+```
+
+Se observa que para la mayoria de las observaciones ganan menos de 50K al año. Entre la población que superan los 50K al año se encuentran principalmente en la mitad de su carrera.  
+
+- Relación con la variable `workclass`
+
+```{r}
+summary(data$workclass)
+
+ggplot(data,aes(workclass,fill=income))+geom_bar()+labs(x="",
+y="Adults")+ggtitle("Income by work class")
+# Tabla de contingencia. 
+tabla_WCI <- table(data$workclass,data$income)
+prop.table(tabla_WCI)
+
+```
+
+- Relación con la variable `education_num`
+
+```{r}
+ggplot(data,aes(education_num,fill=income))+geom_bar()+labs(x="",
+y="Adults")+ggtitle("Income by years of education")
+
+```
+Vemos cómo la proporción en el grupo de ganar más de 50K al año aumenta a medida que aumentan los años de educación.  
+
+
+- Relación con la variable `marital_status` 
+
+```{r}
+summary(data$maritalStatus)
+ggplot(data,aes(maritalStatus,fill=income))+geom_bar() +labs(x="", 
+y ="Adults")+ guides(fill=guide_legend(title=""))+ggtitle("Income by marital status")
+```
+
+
+- Relación con la variable `cccupation` 
+
+```{r}
+ggplot(data,aes(occupation,fill=income))+geom_bar() +labs(x="",
+y ="Adults")+ guides(fill=guide_legend(title=""))+ggtitle("Income by cccupation")
+```
+
+
+- Relación con la variable `sex`
+
+```{r}
+ggplot(data,aes(sex,fill=income))+geom_bar() +labs(x="")+ guides(
+  fill=guide_legend(title=""))+ggtitle("Income by sex")
+# Tabla de contingencia. 
+tabla_SI <- table(data$sex,data$income)
+prop.table(tabla_SI)
+```
+
+
+Visualización con respecto a todas la variables del estudio: 
+```{r}
+
+grid.newpage()
+# Relación con la variable age
+plotbyAge <-ggplot(data,aes(age,fill=income))+geom_bar() +labs(x="",
+y="Adults")+ guides(fill=guide_legend(title=""))+ggtitle("Income by age")
+# Relación con la variable workclass
+plotbyWorkclass <-ggplot(data,aes(workclass,fill=income))+geom_bar() +labs(
+  x="",y="Adults")+ guides(fill=guide_legend(
+  title=""))+ggtitle("Income by work class")
+# Relación con la variable sex
+plotbySex<-ggplot(data,aes(sex,fill=income))+geom_bar() +labs(
+  x="")+ guides(fill=guide_legend(title=""))+ggtitle("Income by sex")
+# Relación con la variable education_num
+plotbyEducation_num<-ggplot(data,aes(education_num,fill=income))+geom_bar() +labs(
+  x="education_num")+ guides(fill=guide_legend(title=""))+ggtitle(
+    "Income by education_num")
+# Relación con la variable marital_status
+plotbyMarital_status <-ggplot(data,aes(maritalStatus,fill=income))+geom_bar() +labs(
+x="")+ guides(fill=guide_legend(title=""))+ggtitle("income by Marital status")
+# Relación con la variable occupation
+plotbyOccupation<-ggplot(data,aes(occupation,fill=income))+geom_bar() +labs(x="", 
+y ="Adults")+ guides(fill=guide_legend(title=""))+ggtitle("Income by cccupation")
+
+grid.arrange(plotbyAge,plotbyWorkclass,plotbySex,plotbyEducation_num, 
+plotbyMarital_status, plotbyOccupation, ncol=2)
+
+```
+
+
+
+### 5.3 Comprobación de la normalidad y homogeneidad de la varianza
+### 5.4 Aplicación de pruebas estadísticas para comparar los grupos de datos
 ## 6. Representación de los resultados a partir de tablas y gráficas
+
+
+
 ## 7. Resolución del problema. 
 ## 8. Contribuciones
 
@@ -248,5 +380,7 @@ write.csv(data, "../data/adults_clean.csv")
 | Integración                 | AL, CV        |
 | Limpieza de datos           | AL, CV        |
 | Análisis de datos           | AL, CV        |
+| Representación de los res.  | .......       |
+| Resolución problema         | ........      |
 
 
