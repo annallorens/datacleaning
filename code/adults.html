@@ -134,6 +134,7 @@ $(document).ready(function () {
 <li><a href="#inegracion-y-seleccion-de-los-datos-de-interes.">3. Inegración y selección de los datos de interés.</a></li>
 <li><a href="#limpieza-de-los-datos.">4. Limpieza de los datos.</a><ul>
 <li><a href="#ceros-y-elementos-vacios">4.1 Ceros y elementos vacios</a></li>
+<li><a href="#tratamiento-de-conjuntos">4.2 Tratamiento de conjuntos</a></li>
 </ul></li>
 <li><a href="#analisis-de-los-datos.">5. Análisis de los datos.</a></li>
 <li><a href="#representacion-de-los-resultados-a-partir-de-tablas-y-graficas">6. Representación de los resultados a partir de tablas y gráficas</a></li>
@@ -198,7 +199,7 @@ head(data[,1:5])</code></pre>
 ##  $ occupation    : Factor w/ 15 levels &quot;?&quot;,&quot;Adm-clerical&quot;,..: 2 5 7 7 11 5 9 5 11 5 ...
 ##  $ relationship  : Factor w/ 6 levels &quot;Husband&quot;,&quot;Not-in-family&quot;,..: 2 1 2 1 6 6 2 1 2 1 ...
 ##  $ race          : Factor w/ 5 levels &quot;Amer-Indian-Eskimo&quot;,..: 5 5 5 3 3 5 3 5 5 5 ...
-##  $ sex           : Factor w/ 2 levels &quot;Female&quot;,&quot;Male&quot;: 2 2 2 2 1 1 1 2 1 2 ...
+##  $ sex           : Factor w/ 2 levels &quot;F&quot;,&quot;M&quot;: 2 2 2 2 1 1 1 2 1 2 ...
 ##  $ capital_gain  : int  2174 0 0 0 0 0 0 0 14084 5178 ...
 ##  $ capital_loss  : int  0 0 0 0 0 0 0 0 0 0 ...
 ##  $ hour_per_week : int  40 13 40 40 40 40 16 45 50 40 ...
@@ -226,14 +227,14 @@ data$race &lt;- NULL</code></pre>
 ##  3rd Qu.:48.00   State-gov       : 1298   3rd Qu.:12.00  
 ##  Max.   :90.00   Self-emp-inc    : 1116   Max.   :16.00  
 ##                  (Other)         :  981                  
-##                maritalStatus             occupation       sex       
-##  Divorced             : 4443   Prof-specialty :4140   Female:10771  
-##  Married-AF-spouse    :   23   Craft-repair   :4099   Male  :21790  
-##  Married-civ-spouse   :14976   Exec-managerial:4066                 
-##  Married-spouse-absent:  418   Adm-clerical   :3770                 
-##  Never-married        :10683   Sales          :3650                 
-##  Separated            : 1025   Other-service  :3295                 
-##  Widowed              :  993   (Other)        :9541                 
+##                maritalStatus             occupation   sex      
+##  Divorced             : 4443   Prof-specialty :4140   F:10771  
+##  Married-AF-spouse    :   23   Craft-repair   :4099   M:21790  
+##  Married-civ-spouse   :14976   Exec-managerial:4066            
+##  Married-spouse-absent:  418   Adm-clerical   :3770            
+##  Never-married        :10683   Sales          :3650            
+##  Separated            : 1025   Other-service  :3295            
+##  Widowed              :  993   (Other)        :9541            
 ##  hour_per_week     income     
 ##  Min.   : 1.00   &lt;=50K:24720  
 ##  1st Qu.:40.00   &gt;50K : 7841  
@@ -244,6 +245,130 @@ data$race &lt;- NULL</code></pre>
 ## </code></pre>
 <div id="ceros-y-elementos-vacios" class="section level3">
 <h3>4.1 Ceros y elementos vacios</h3>
+<p>Tal y como se indica en la descripción del dataset se utiliza el carácter ‘?’ para denotar un valor desconocido. Así, se procede a conocer a continuación qué campos contienen elementos vacíos:</p>
+<pre class="r"><code># Números de valores desconocidos por campo
+colSums(data==&quot;?&quot;)</code></pre>
+<pre><code>##           age     workclass education_num maritalStatus    occupation 
+##             0          1836             0             0          1843 
+##           sex hour_per_week        income 
+##             0             0             0</code></pre>
+<p>Llegados a este punto debemos decidir cómo manejar estos registros que contienen valores desconocidos para algún campo. Al disponer de un conjunto de datos relativamente grande (más de 32000 observaciones) procederemos a eliminar las columnas con registros nulos.</p>
+<pre class="r"><code>data&lt;-data[!(data$workclass==&quot;?&quot;),]
+data&lt;-data[!(data$occupation==&quot;?&quot;),]</code></pre>
+<pre class="r"><code># Comprobamos valores nulos
+colSums(data==&quot;?&quot;)</code></pre>
+<pre><code>##           age     workclass education_num maritalStatus    occupation 
+##             0             0             0             0             0 
+##           sex hour_per_week        income 
+##             0             0             0</code></pre>
+</div>
+<div id="tratamiento-de-conjuntos" class="section level3">
+<h3>4.2 Tratamiento de conjuntos</h3>
+<p>Para simplificar el conjunto de valores de las variables categóricas vamos agrupar por categorias los siguientes atributos: <em>workclass</em> , <em>maritalStatus</em>, <em>occupation</em></p>
+<ul>
+<li>Para la variable <strong>workclass</strong> deferenciaremos entre: goverment, public, public, self-employed, other</li>
+</ul>
+<pre class="r"><code># Observamos atributos originales para la variable workclass
+summary(data$workclass)</code></pre>
+<pre><code>##                ?      Federal-gov        Local-gov     Never-worked 
+##                0              960             2093                0 
+##          Private     Self-emp-inc Self-emp-not-inc        State-gov 
+##            22696             1116             2541             1298 
+##      Without-pay 
+##               14</code></pre>
+<pre class="r"><code>levels(data$workclass)[1] &lt;- 'Unknown'
+# combine into Government job
+data$workclass &lt;- gsub('^Federal-gov', 'Government', data$workclass)
+data$workclass &lt;- gsub('^Local-gov', 'Government', data$workclass)
+data$workclass &lt;- gsub('^State-gov', 'Government', data$workclass) 
+data$workclass &lt;- gsub('^Government', 'Public', data$workclass) 
+# combine into Sele-Employed job
+data$workclass &lt;- gsub('^Self-emp-inc', 'Self-Employed', data$workclass)
+data$workclass &lt;- gsub('^Self-emp-not-inc', 'Self-Employed', data$workclass)
+
+# combine into Other/Unknown
+data$workclass &lt;- gsub('^Never-worked', 'Other', data$workclass)
+data$workclass &lt;- gsub('^Without-pay', 'Other', data$workclass)
+data$workclass &lt;- gsub('^Other', 'Other', data$workclass)
+data$workclass &lt;- gsub('^Unknown', 'Other', data$workclass)
+data$workclass &lt;- as.factor(data$workclass)</code></pre>
+<pre class="r"><code># Observamos nuevos atributos para la variable workclass
+summary(data$workclass)</code></pre>
+<pre><code>##         Other       Private        Public Self-Employed 
+##            14         22696          4351          3657</code></pre>
+<ul>
+<li>Para la variable <strong>maritalStatus</strong> deferenciaremos entre: married, single</li>
+</ul>
+<pre class="r"><code># Observamos atributos originales para la variable maritalStatus
+summary(data$maritalStatus)</code></pre>
+<pre><code>##              Divorced     Married-AF-spouse    Married-civ-spouse 
+##                  4258                    21                 14339 
+## Married-spouse-absent         Never-married             Separated 
+##                   389                  9912                   959 
+##               Widowed 
+##                   840</code></pre>
+<pre class="r"><code>data$maritalStatus &lt;- gsub('Married-AF-spouse', 'Married', data$maritalStatus)
+data$maritalStatus &lt;- gsub('Married-civ-spouse', 'Married', data$maritalStatus)
+data$maritalStatus &lt;- gsub('Married-spouse-absent', 'Married', data$maritalStatus)
+data$maritalStatus &lt;- gsub('Never-married', 'Single', data$maritalStatus)
+data$maritalStatus &lt;- gsub('Widowed', 'Single', data$maritalStatus)
+data$maritalStatus &lt;- gsub('Divorced', 'Single', data$maritalStatus)
+data$maritalStatus &lt;- gsub('Separated', 'Single', data$maritalStatus)
+data$maritalStatus &lt;- as.factor(data$maritalStatus)</code></pre>
+<pre class="r"><code># Observamos nuevos atributos para la variable maritalStatus
+summary(data$maritalStatus)</code></pre>
+<pre><code>## Married  Single 
+##   14749   15969</code></pre>
+<ul>
+<li>Para la variable <strong>occupation</strong> deferenciaremos entre: Adm-clerical, Blue-Collar, Other/Unknown, Professional, Sales, Service, White-Collar</li>
+</ul>
+<pre class="r"><code># Observamos atributos originales para la variable occupation
+summary(data$occupation)</code></pre>
+<pre><code>##                 ?      Adm-clerical      Armed-Forces      Craft-repair 
+##                 0              3770                 9              4099 
+##   Exec-managerial   Farming-fishing Handlers-cleaners Machine-op-inspct 
+##              4066               994              1370              2002 
+##     Other-service   Priv-house-serv    Prof-specialty   Protective-serv 
+##              3295               149              4140               649 
+##             Sales      Tech-support  Transport-moving 
+##              3650               928              1597</code></pre>
+<pre class="r"><code>levels(data$occupation)[1] &lt;- 'Unknown'
+data$occupation &lt;- gsub('Craft-repair', 'Blue-Collar', data$occupation)
+data$occupation &lt;- gsub('Exec-managerial', 'White-Collar', data$occupation)
+data$occupation &lt;- gsub('Farming-fishing', 'Blue-Collar', data$occupation)
+data$occupation &lt;- gsub('Handlers-cleaners', 'Blue-Collar', data$occupation)
+data$occupation &lt;- gsub('Machine-op-inspct', 'Blue-Collar', data$occupation)
+data$occupation &lt;- gsub('Other-service', 'Service', data$occupation)
+data$occupation &lt;- gsub('Priv-house-serv', 'Service', data$occupation)
+data$occupation &lt;- gsub('Prof-specialty', 'Professional', data$occupation)
+data$occupation &lt;- gsub('Protective-serv', 'Service', data$occupation)
+data$occupation &lt;- gsub('Tech-support', 'Service', data$occupation)
+data$occupation &lt;- gsub('Transport-moving', 'Blue-Collar', data$occupation)
+data$occupation &lt;- gsub('Unknown', 'Other/Unknown', data$occupation)
+data$occupation &lt;- gsub('Armed-Forces', 'Other/Unknown', data$occupation)
+data$occupation &lt;- as.factor(data$occupation)</code></pre>
+<pre class="r"><code># Observamos nuevos atributos para la variable occupation
+summary(data$occupation)</code></pre>
+<pre><code>##  Adm-clerical   Blue-Collar Other/Unknown  Professional         Sales 
+##          3770         10062             9          4140          3650 
+##       Service  White-Collar 
+##          5021          4066</code></pre>
+<pre class="r"><code># Observamos el conjunto de datos una vez han sido procesados
+head(data)</code></pre>
+<pre><code>##   age     workclass education_num maritalStatus   occupation sex
+## 1  39        Public            13        Single Adm-clerical   M
+## 2  50 Self-Employed            13       Married White-Collar   M
+## 3  38       Private             9        Single  Blue-Collar   M
+## 4  53       Private             7       Married  Blue-Collar   M
+## 5  28       Private            13       Married Professional   F
+## 6  37       Private            14       Married White-Collar   F
+##   hour_per_week income
+## 1            40  &lt;=50K
+## 2            13  &lt;=50K
+## 3            40  &lt;=50K
+## 4            40  &lt;=50K
+## 5            40  &lt;=50K
+## 6            40  &lt;=50K</code></pre>
 </div>
 </div>
 <div id="analisis-de-los-datos." class="section level2">
@@ -275,15 +400,15 @@ data$race &lt;- NULL</code></pre>
 </tr>
 <tr class="odd">
 <td>Descripción</td>
-<td align="right">Al, CV</td>
+<td align="right">AL, CV</td>
 </tr>
 <tr class="even">
 <td>Integración</td>
-<td align="right">Al, CV</td>
+<td align="right">AL, CV</td>
 </tr>
 <tr class="odd">
 <td>Limpieza de datos</td>
-<td align="right">…….</td>
+<td align="right">AL, CV</td>
 </tr>
 <tr class="even">
 <td>Desarrollo código</td>

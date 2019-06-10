@@ -62,6 +62,12 @@ data <-read.csv('../data/adults.csv', header = TRUE)
 ```{r , include=FALSE}
 #Eliminamos la primera columna ya que se trata de un índice.
 data$X <- NULL
+
+# Factorizamos variable sexo
+data$sex <- gsub('Female', 'F', data$sex)
+data$sex <- gsub('Male', 'M', data$sex)
+data$sex <- as.factor(data$sex)
+
 ```
 
 ```{r}
@@ -99,9 +105,29 @@ summary(data)
 ```
 
 ### 4.1 Ceros y elementos vacios 
+Tal y como se indica en la descripción del dataset se utiliza el carácter '?' para denotar un valor desconocido. Así, se procede a conocer a continuación qué campos contienen elementos vacíos:
+
+```{r}
+# Números de valores desconocidos por campo
+colSums(data=="?")
+```
+ 
+Llegados a este punto debemos decidir cómo manejar estos registros que contienen valores desconocidos para algún campo. Al disponer de un conjunto de datos relativamente grande (más de 32000 observaciones) procederemos a eliminar las columnas con registros nulos. 
+```{r}
+data<-data[!(data$workclass=="?"),]
+data<-data[!(data$occupation=="?"),]
+```
+
+```{r}
+# Comprobamos valores nulos
+colSums(data=="?")
+```
 
 
-## 5. Análisis de los datos. 
+### 4.2 Identificación y tratamiento de valores extremos
+## 5. Análisis de los datos.
+### 5.1 Selección de los grupos de datos que se quieren analizar
+
 ## 6. Representación de los resultados a partir de tablas y gráficas
 ## 7. Resolución del problema. 
 ## 8. Contribuciones
@@ -110,9 +136,9 @@ summary(data)
 | --------------------------- | -------------:|
 | Investigación previa        | AL, CV        |
 | Introducción                | AL, CV        | 
-| Descripción                 | Al, CV        |
-| Integración                 | Al, CV        |
-| Limpieza de datos           | .......       |
+| Descripción                 | AL, CV        |
+| Integración                 | AL, CV        |
+| Limpieza de datos           | AL, CV        |
 | Desarrollo código           | ...........   |
 
 
