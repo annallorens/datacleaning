@@ -1,0 +1,65 @@
+---
+title: 'PRÁCTICA 2: Limpieza y validación de los datos'
+author: "Autores: Anna Llorens Roig, Carlos Villar Robles"
+date: "Dataset: Adults"
+output:
+  pdf_document:
+    highlight: zenburn
+    toc: yes
+  html_document:
+    highlight: default
+    theme: cosmo
+    toc: yes
+    toc_depth: 2
+  word_document: default
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 1. Descripción del dataset
+
+El conjunto de datos objeto de análisis se ha obtenido del repositorio UCI Machine Learning. Se trata del 'Adult data set' el cual consta de 14 atributos ..... Entre los campos del conjunto de datos encontramos los siguientes:
+  - 
+
+### 1.1. Importancia y objetivos de los análisis
+
+
+You can also embed plots, for example:
+
+## 2. Inegración y selección de los datos de interés. 
+
+Antes de comenzar con la limpieza de los datos, procedemos a realizar la lectura del fichero
+en formato CSV en el que se encuentran. El resultado devuelto por la llamada a la función
+read.csv() será un objeto data.frame:
+
+```{r}
+# Lectura de datos
+data <-read.csv('../data/adults.csv', header = TRUE)
+head(data[,1:5])
+
+#Eliminamos la primera columna ya que se trata de un índice.
+data$X <- NULL
+
+# Vector con los tipos de variables R para cada variable
+sapply(data,class)
+
+# Revisión descriptiva de la matriz de datos
+summary(data)
+```
+
+Observamos que tenemos un total de 32561 observaciones en 15 variables. 
+
+## 3. Limpieza de los datos. 
+## 4. Análisis de los datos. 
+## 5. Representación de los resultados a partir de tablas y gráficas
+## 6. Resolución del problema. 
+## 7. Contribuciones
+
+| Contribuciones              | Firma         |
+| --------------------------- | -------------:|
+| Investigación previa        | AL, CV        |  
+| Redacción de las respuestas | centered      |
+| Desarrollo código           | are neat      |
+
+
