@@ -129,7 +129,11 @@ $(document).ready(function () {
 
 <div id="TOC">
 <ul>
-<li><a href="#introduccion">1. Introducción</a></li>
+<li><a href="#introduccion">1. Introducción</a><ul>
+<li><a href="#miembros-del-equipo">1.1 Miembros del equipo</a></li>
+<li><a href="#contenido-del-repositorio">1.2 Contenido del repositorio</a></li>
+<li><a href="#enlace-a-git">1.3 Enlace a git</a></li>
+</ul></li>
 <li><a href="#descripcion-del-dataset">2. Descripción del dataset</a><ul>
 <li><a href="#importacion-de-librerias">2.1 Importación de librerías</a></li>
 </ul></li>
@@ -153,12 +157,35 @@ $(document).ready(function () {
 
 <div id="introduccion" class="section level2">
 <h2>1. Introducción</h2>
-<p>El conjunto de datos objeto de análisis es de la base de datos ‘data’ del Censo de 1994 en Estados Unidos. Los detalles de este conjunto de datos se pueden encontrar en el repositorio de UCI Machine Learning: <a href="https://archive.ics.uci.edu/ml/datasets/data" class="uri">https://archive.ics.uci.edu/ml/datasets/data</a>.</p>
-<p>Durante el desarrollo de esta práctica trataremos de construir un modelo para predecir si el ingreso de cualquier individuo en los Estados Unidos es mayor o menor que USD 50000 según la información disponible sobre ese individuo en los datos del censo. Nos interesa conocer qué tan bien se puede predecir si el ingreso anual de una persona supera los 50000$ utilizando el conjunto de variables en este conjunto de datos. La pregunta se inspecciona en dos enfoques: técnicas de aprendizaje automático, visualización de datos y modelado estadístico tradicional. </p>
+<p>Esta práctica se ha realizado bajo el contexto de la asignatura <em>Tipología y ciclo de vida de los datos</em>, perteneciente al Máster en Ciencia de Datos de la Universitat Oberta de Catalunya. En ella, se aplican técnicas de <em>limpieza y validación de de los datos</em> mediante el lenguaje de programación R para realizar un analális de datos del dataset <em>Adults</em> proporcionado por el repositorio de UCI Machine Learning.</p>
+<div id="miembros-del-equipo" class="section level3">
+<h3>1.1 Miembros del equipo</h3>
+<p>La actividad ha sido realizada por:</p>
+<ul>
+<li>Anna Llorens Roig (Aula1)</li>
+<li>Carlos Villar Robles (Aula2)</li>
+</ul>
+</div>
+<div id="contenido-del-repositorio" class="section level3">
+<h3>1.2 Contenido del repositorio</h3>
+<ul>
+<li><strong>data/adults.csv</strong>: Punto de entrada al programa. Datos originales.</li>
+<li><strong>data/adults_clean.csv</strong>: Fichero de salida de datos.</li>
+<li><strong>code/adults.Rmd</strong>: Código de resolución de la actividad en R.</li>
+<li><strong>code/adults.pdf</strong>: Respuestas actividad en formato pdf.</li>
+<li><strong>code/adults.html</strong>: Respuestas actividad en formato html.</li>
+</ul>
+</div>
+<div id="enlace-a-git" class="section level3">
+<h3>1.3 Enlace a git</h3>
+<p><a href="https://github.com/annallorens/datacleaning" class="uri">https://github.com/annallorens/datacleaning</a></p>
+</div>
 </div>
 <div id="descripcion-del-dataset" class="section level2">
 <h2>2. Descripción del dataset</h2>
-<p>Se trata del ‘data data set’ el cual consta de 15 atributos y 32561 observaciones.  Entre los campos del conjunto de datos encontramos las siguientes variables dependientes:</p>
+<p>El conjunto de datos objeto de análisis es de la base de datos ‘data’ del Censo de 1994 en Estados Unidos. Los detalles de este conjunto de datos se pueden encontrar en el repositorio de UCI Machine Learning: <a href="https://archive.ics.uci.edu/ml/datasets/adult" class="uri">https://archive.ics.uci.edu/ml/datasets/adult</a>.</p>
+<p>Durante el desarrollo de esta práctica trataremos de construir un modelo para predecir si el ingreso de cualquier individuo en los Estados Unidos es mayor o menor que USD 50000 según la información disponible sobre ese individuo en los datos del censo. Nos interesa conocer qué tan bien se puede predecir si el ingreso anual de una persona supera los 50000$ utilizando el conjunto de variables en este conjunto de datos. La pregunta se inspecciona en dos enfoques: técnicas de aprendizaje automático, visualización de datos y modelado estadístico tradicional. </p>
+<p>Se trata del ‘adults data set’ el cual consta de 15 atributos y 32561 observaciones.  Entre los campos del conjunto de datos encontramos las siguientes variables dependientes:</p>
 <ul>
 <li><em><strong>age</strong></em>: edad del individuo</li>
 <li><em><strong>type_employer</strong></em>: tipo de empleador que tiene el individuo. Ya sean gubernamentales, militares, privados, etc.</li>
