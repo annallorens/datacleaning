@@ -3,14 +3,14 @@ title: 'PRÁCTICA 2: Limpieza y validación de los datos'
 author: "Autores: Anna Llorens Roig, Carlos Villar Robles"
 date: "Dataset: Adults"
 output:
+  pdf_document:
+    highlight: zenburn
+    toc: yes
   html_document:
     highlight: default
     theme: cosmo
     toc: yes
     toc_depth: 3
-  pdf_document:
-    highlight: zenburn
-    toc: yes
   word_document: default
 ---
 ```{r setup, include=FALSE}
@@ -474,7 +474,7 @@ Creemos que, existen diversos factores en este Dataset bastante significativos q
 | Integración                 | AL, CV        |
 | Limpieza de datos           | AL, CV        |
 | Análisis de datos           | AL, CV        |
-| Representación de los res.  | .......       |
-| Resolución problema         | ........      |
+| Representación de los res.  | AL, CV        |
+| Resolución problema         | AL, CV        |
 
 
